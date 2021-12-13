@@ -1,139 +1,115 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define max 7
-int jmlHash;
+#include <conio.h>
+#define max 5
 
-typedef struct infoNasabah
+int jumlahnode = 0;
+
+struct node
 {
-  char *nama;
-  int noRek;
-  struct infoNasabah *next;
-} nasabah;
+  char nama[50];
+  long int nomor, saldo, pass;
+  struct node *prev;
+  struct node *next;
+} * head, *temp, *temp1;
 
-nasabah *globalChain[max];
-
-void init(nasabah *table[])
+void buatnode()
 {
-  int i;
-  for (i = 0; i < jmlHash; i++)
-  {
-    table[i] = NULL;
-  }
+  int nomor, saldo, pass;
+  char nama[30];
+  temp = (struct node *)malloc(sizeof(struct node));
+  temp->prev = NULL;
+  temp->next = NULL;
+  printf("|$|Masukkan nama nasabah        : ");
+  scanf(" %49[^\n]", &nama);
+  printf("|$|Masukkan nomor identitas     : ");
+  scanf("%d", &nomor);
+  printf("|$|Masukkan password identitas  : ");
+  scanf("%d", &pass);
+  printf("|$|Masukkan jumlah top up saldo : ");
+  scanf("%d", &saldo);
+  temp->nomor = nomor;
+  temp->pass = pass;
+  temp->saldo = saldo;
+  strcpy(temp->nama, nama);
+  jumlahnode++;
 }
 
-unsigned int hash(int rek)
+void tambahdatahead()
 {
-  int index = rek % jmlHash;
-  return index;
-}
-
-void input(nasabah *table[], char nama[75], int rek)
-{
-  nasabah *baru = (nasabah *)malloc(sizeof(nasabah));
-  baru->nama = strdup(nama);
-  baru->noRek = rek;
-  baru->next = NULL;
-
-  int index = hash(rek);
-  if (table[index] == NULL)
+  printf("|$|-----------------------------------------|$|\n");
+  printf("|$|          Tambah Data Nasabah            |$|\n");
+  printf("|$|-----------------------------------------|$|\n");
+  if (head == NULL)
   {
-    table[index] = baru;
+    buatnode();
+    head = temp;
+    temp1 = head;
   }
   else
   {
-    nasabah *bantu = table[index];
-    while (bantu->next)
-    {
-      bantu = bantu->next;
-    }
-    bantu->next = baru;
+    buatnode();
+    temp1->next = temp;
+    temp->prev = temp1;
+    temp1 = temp;
   }
-}
-
-void display(nasabah *chain[])
-{
-  int i;
-  for (i = 0; i < jmlHash; i++)
-  {
-    nasabah *baru = chain[i];
-    printf("chain[%d] >>> ", i + 1);
-    while (baru)
-    {
-      printf("Nama: %s\n", baru->nama);
-      printf("No Rek: %d\n", baru->noRek);
-      baru = baru->next;
-    }
-    printf("NULL\n");
-  }
-}
-
-void menu()
-{
-  printf("Operator Bank\n\n");
-  printf("Menu:\n");
-  printf("1. Tambah Nasabah\n2. Hapus Nasabah\n3. Tampil List Nasabah\n4. Tampil Saldo Nasabah\n5. Tambah/Tarik Saldo Nasabah\n6. Transfer Saldo\n7. Riwayat\n8. Exit\n");
 }
 
 int main()
 {
-  int pilMenu, ul;
-  int i, rekTemp;
-  char namaTemp[75];
+  int menu, ulang;
   do
   {
-    menu();
-    printf("Pilihan Menu: ");
-    scanf("%d", &pilMenu);
-    if (pilMenu == 1)
-    {
-      printf("Masukkan jumlah nasabah: ");
-      scanf("%d", &jmlHash);
-      nasabah *chain[jmlHash];
-      init(chain);
-      printf("\n");
-      for (i = 0; i < jmlHash; i++)
-      {
-        printf("Masukkan nama nasabah ke-%d: ", i + 1);
-        scanf(" %75[^\n]s", &namaTemp);
-        printf("Masukkan No. Rekening nasabah: ");
-        scanf("%d", &rekTemp);
-        input(chain, namaTemp, rekTemp);
-      }
-      for (i = 0; i < jmlHash; i++)
-      {
-        globalChain[i] = chain[i];
-      }
-    }
-    else if (pilMenu == 2)
-    {
-    }
-    else if (pilMenu == 3)
-    {
-      display(globalChain);
-    }
-    else if (pilMenu == 4)
-    {
-    }
-    else if (pilMenu == 5)
-    {
-    }
-    else if (pilMenu == 6)
-    {
-    }
-    else if (pilMenu == 7)
-    {
-    }
-    else if (pilMenu == 8)
-    {
-      exit(1);
-    }
-    else
-    {
-      printf("Pilihan Invalid!!\n");
-    }
-    printf("Untuk ulang ketik 1: ");
-    scanf("%d", &ul);
     system("cls");
-  } while (ul == 1);
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|----------------Menu Bank----------------|$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     1. Tambah Data Nasabah              |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     2. Hapus Data Nasabah               |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     3. Tampilkan Data Nasabah           |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     4. Top Up Saldo Nasabah             |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     5. Tarik  Saldo Nasabah             |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     6. Transfer Saldo ke Nasabah Lain   |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     7. Cek Riwayat Transfer             |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|     8. Cek Riwayat Transaksi            |$|\n");
+    printf("|$|-----------------------------------------|$|\n");
+    printf("|$|Masukkan pilihan : ");
+    scanf("%d", &menu);
+    switch (menu)
+    {
+    case 1:
+      system("cls");
+      tambahdatahead();
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    case 7:
+      break;
+    case 8:
+      break;
+    default:
+      printf("|$|Mohon maaf menu yg anda pilih salah");
+      break;
+    }
+    printf("\n|$|Apakah anda ingin mengulang? Input 1 jika ya : ");
+    scanf("%d", &ulang);
+
+  } while (ulang == 1);
+  return;
 }
