@@ -3,7 +3,7 @@
 #include <string.h>
 #include <conio.h>
 #define max 5
-
+//ngetest aja
 int jumlahnode = 0;
 
 struct node
